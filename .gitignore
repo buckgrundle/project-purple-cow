@@ -1,0 +1,14 @@
+# Terraform cruft
+*.tfstate
+*.tfstate.backup
+.terraform*/
+*.tfplan
+
+# Secrets
+.envrc
+
+# zip files
+*.zip
+
+# Mac
+.DS_Store
