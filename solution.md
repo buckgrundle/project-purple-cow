@@ -1,3 +1,29 @@
+### Solutions and assumptions
+
+For this assignment I decided to first re-write the Lambda entirely in Go as it has been my primary coding language
+for the past 4 years. In the interest of time and trying to comply with the 2 hour constraint, it was a better decision
+to re-write it quickly than to re-learn Python.
+
+The updated Terraform code lives in the `terraform` directory. I also went ahead and created an `s3` backend and bucket in
+my personal AWS account to store the Terraform state. In addition, I created a DynamoDB table to store the state lock. Running a `terraform plan`
+will first build .zip files for both the Go and Python Lambdas and then calculate the changes to the infrastructure. The output of running a
+successful `terraform plan` on my AWS account is below.
+
+### Running the Go Lambda locally
+1. Check out the repo
+2. run `go mod vendor` and `go mod tidy` to get the dependencies
+3. run `go run main.go` to start the server on port 3000
+4. open a browser and go to `http://localhost:3000/ssl-checker?host=google.com`
+
+### Running the Terraform
+1. Check out the repo
+2. To run locally, you will need to export both `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` as environment variables
+3. Run `terraform init` to get the dependencies
+4. Run `terraform plan` to see what will be created
+
+Example output from `terraform plan`:
+
+```
 Terraform will perform the following actions:
 
 aws_dynamodb_table.state_lock will be created
@@ -176,4 +202,5 @@ aws_lambda_function.ssl_lambda_go will be created
 
 Plan: 5 to add, 0 to change, 0 to destroy.
 
-──────────────────────────────────────────────────────────────────────────────────────"
+──────────────────────────────────────────────────────────────────────────────────────
+```

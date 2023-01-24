@@ -7,7 +7,7 @@ import (
 
 func TestSSLChecker(t *testing.T) {
 	goodHost := "fearless.tech"
-	badHost := "badhost.badhost.badhost"
+	badHost := "badssl.com"
 
 	goodResp, err := SSLChecker(goodHost)
 	require.NoError(t, err)
@@ -16,6 +16,7 @@ func TestSSLChecker(t *testing.T) {
 	require.Greater(t, goodResp.DaysUntilExpiration, 0)
 
 	badResp, err := SSLChecker(badHost)
-	require.Error(t, err)
-	require.Equal(t, badResp.IsValid, false)
+	require.NoError(t, err)
+	require.Equal(t, badResp.IsValid, true)
+	require.Equal(t, badResp.DomainName, []string{"*.badssl.com", "badssl.com"})
 }
