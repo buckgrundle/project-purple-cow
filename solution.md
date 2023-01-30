@@ -1,4 +1,4 @@
-### Solutions and assumptions
+### Solution
 
 For this assignment I decided to first re-write the Lambda entirely in Go as it has been my primary coding language
 for the past 4 years. In the interest of time and trying to comply with the two hour constraint, it was a better decision
