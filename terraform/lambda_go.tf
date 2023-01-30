@@ -18,7 +18,7 @@ resource "aws_iam_role" "iam_for_lambda_go" {
 EOF
 }
 
-resource "aws_lambda_function" "ssl_lambda_go" {
+resource "aws_lambda_function" "ssl_checker_lambda_go" {
   filename         = data.archive_file.ssl_lambda_go.output_path
   function_name    = "ssl_checker"
   role             = aws_iam_role.iam_for_lambda_go.arn
@@ -28,4 +28,12 @@ resource "aws_lambda_function" "ssl_lambda_go" {
   depends_on = [
     data.archive_file.ssl_lambda_go
   ]
+}
+
+resource "aws_lambda_permission" "allow_api_gateway" {
+    statement_id  = "AllowAPIGatewayInvoke"
+    action        = "lambda:InvokeFunction"
+    function_name = aws_lambda_function.ssl_checker_lambda_go.function_name
+    principal     = "apigateway.amazonaws.com"
+    source_arn = "${aws_api_gateway_rest_api.ssl_checker.execution_arn}/*/*"
 }
